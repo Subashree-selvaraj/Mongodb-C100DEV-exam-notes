@@ -1,0 +1,295 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); color: var(--color-text-primary); }
+  .sheet { padding: 1rem 0; }
+  .sheet-header { margin-bottom: 1.2rem; }
+  .sheet-header h2 { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+  .sheet-header p { font-size: 12px; color: var(--color-text-secondary); }
+  .section { margin-bottom: 1.2rem; border: 1px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); overflow: hidden; }
+  .sec-head { padding: 10px 14px; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+  .sec-head .badge { font-size: 10px; padding: 2px 7px; border-radius: 20px; font-weight: 400; }
+  .sec-body { padding: 12px 14px; background: var(--color-background-primary); display: flex; flex-direction: column; gap: 8px; }
+  .row { display: flex; gap: 10px; align-items: flex-start; }
+  .row .label { min-width: 130px; font-size: 12px; font-weight: 500; color: var(--color-text-secondary); padding-top: 1px; }
+  .row .val { font-size: 12px; line-height: 1.6; flex: 1; }
+  code { font-family: var(--font-mono); font-size: 11px; background: var(--color-background-tertiary); border: 1px solid var(--color-border-tertiary); padding: 0px 5px; border-radius: 4px; }
+  .trap { background: #FAEEDA; border-left: 3px solid #BA7517; border-radius: 6px; padding: 8px 10px; font-size: 12px; line-height: 1.6; }
+  .trap strong { color: #854F0B; font-weight: 500; }
+  @media (prefers-color-scheme: dark) {
+    .trap { background: #412402; border-color: #BA7517; }
+    .trap strong { color: #FAC775; }
+  }
+  .tip { background: #E1F5EE; border-left: 3px solid #1D9E75; border-radius: 6px; padding: 8px 10px; font-size: 12px; line-height: 1.6; }
+  .tip strong { color: #0F6E56; font-weight: 500; }
+  @media (prefers-color-scheme: dark) {
+    .tip { background: #04342C; border-color: #1D9E75; }
+    .tip strong { color: #9FE1CB; }
+  }
+  .code-block { background: var(--color-background-tertiary); border: 1px solid var(--color-border-tertiary); border-radius: 6px; padding: 10px 12px; font-family: var(--font-mono); font-size: 11px; line-height: 1.7; white-space: pre; overflow-x: auto; }
+  .divider { height: 1px; background: var(--color-border-tertiary); margin: 4px 0; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mini-card { border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 8px 10px; background: var(--color-background-secondary); }
+  .mini-card .mc-title { font-size: 11px; font-weight: 500; margin-bottom: 4px; color: var(--color-text-secondary); }
+  .mini-card .mc-val { font-size: 12px; line-height: 1.5; }
+  .tag-purple { background: #EEEDFE; color: #3C3489; }
+  .tag-teal   { background: #E1F5EE; color: #0F6E56; }
+  .tag-amber  { background: #FAEEDA; color: #854F0B; }
+  .tag-coral  { background: #FAECE7; color: #993C1D; }
+  .tag-blue   { background: #E6F1FB; color: #185FA5; }
+  @media (prefers-color-scheme: dark) {
+    .tag-purple { background: #26215C; color: #CECBF6; }
+    .tag-teal   { background: #04342C; color: #9FE1CB; }
+    .tag-amber  { background: #412402; color: #FAC775; }
+    .tag-coral  { background: #4A1B0C; color: #F5C4B3; }
+    .tag-blue   { background: #042C53; color: #B5D4F4; }
+  }
+  .h-purple { background: #EEEDFE; }
+  .h-teal   { background: #E1F5EE; }
+  .h-amber  { background: #FAEEDA; }
+  .h-coral  { background: #FAECE7; }
+  .h-blue   { background: #E6F1FB; }
+  @media (prefers-color-scheme: dark) {
+    .h-purple { background: #26215C; }
+    .h-teal   { background: #04342C; }
+    .h-amber  { background: #412402; }
+    .h-coral  { background: #4A1B0C; }
+    .h-blue   { background: #042C53; }
+  }
+  .chip { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 10px; margin: 1px; }
+  .verdict { display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 4px 0; }
+  .verdict .icon { font-size: 13px; min-width: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  td, th { padding: 6px 10px; text-align: left; border-bottom: 1px solid var(--color-border-tertiary); }
+  th { font-weight: 500; color: var(--color-text-secondary); font-size: 11px; background: var(--color-background-secondary); }
+  td code { font-size: 10.5px; }
+  .next-btn { margin-top: 1rem; width: 100%; padding: 10px; border-radius: 8px; border: none; background: #7F77DD; color: #fff; font-size: 13px; cursor: pointer; font-family: var(--font-sans); font-weight: 500; }
+</style>
+
+<div class="sheet">
+  <div class="sheet-header">
+    <h2>Day 1 cheat sheet — Document model + CRUD basics</h2>
+    <p>Everything you need to remember. Review this before sleeping tonight.</p>
+  </div>
+
+  <!-- SECTION 1: Document model -->
+  <div class="section">
+    <div class="sec-head h-purple">
+      Document model fundamentals
+      <span class="badge tag-purple">17% of exam</span>
+    </div>
+    <div class="sec-body">
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mc-title">SQL → MongoDB mapping</div>
+          <div class="mc-val">
+            Table → <code>Collection</code><br>
+            Row → <code>Document</code><br>
+            Column → <code>Field</code><br>
+            JOIN → <code>$lookup</code>
+          </div>
+        </div>
+        <div class="mini-card">
+          <div class="mc-title">Hard document rules</div>
+          <div class="mc-val">
+            • <code>_id</code> required &amp; unique per collection<br>
+            • <code>_id</code> is <strong>immutable</strong> — cannot update<br>
+            • Max doc size: <strong>16 MB</strong><br>
+            • Schema is flexible by default
+          </div>
+        </div>
+      </div>
+      <div class="tip"><strong>Memory trick:</strong> "_id is immortal" — once born, it never changes.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: BSON types -->
+  <div class="section">
+    <div class="sec-head h-amber">
+      BSON types — exam favourite
+      <span class="badge tag-amber">Know every type</span>
+    </div>
+    <div class="sec-body">
+      <table>
+        <tr><th>BSON type</th><th>JS/mongosh syntax</th><th>Note</th></tr>
+        <tr><td>ObjectId</td><td><code>ObjectId("...")</code></td><td>12-byte unique ID, auto for _id</td></tr>
+        <tr><td>String</td><td><code>"hello"</code></td><td>UTF-8</td></tr>
+        <tr><td>Double</td><td><code>8.8</code></td><td>Default for decimals — NOT for money</td></tr>
+        <tr><td>Int32</td><td><code>NumberInt(42)</code></td><td>32-bit integer</td></tr>
+        <tr><td>Int64</td><td><code>NumberLong(9999999)</code></td><td>64-bit integer</td></tr>
+        <tr><td><strong>Decimal128</strong></td><td><code>NumberDecimal("9.99")</code></td><td>⭐ Use for money / high precision</td></tr>
+        <tr><td>Boolean</td><td><code>true / false</code></td><td></td></tr>
+        <tr><td>Date</td><td><code>new Date()</code></td><td>BSON-only (not in JSON)</td></tr>
+        <tr><td>Array</td><td><code>[1, 2, 3]</code></td><td></td></tr>
+        <tr><td>Embedded doc</td><td><code>{ key: val }</code></td><td>Nested objects</td></tr>
+        <tr><td>Null</td><td><code>null</code></td><td></td></tr>
+        <tr><td>Binary</td><td><code>BinData(...)</code></td><td>BSON-only</td></tr>
+        <tr><td>Timestamp</td><td><code>Timestamp(1,1)</code></td><td>Internal MongoDB use</td></tr>
+      </table>
+      <div class="trap"><strong>⚠ Exam trap:</strong> JSON only has one "number" type. BSON has FOUR numeric types: Double, Int32, Int64, Decimal128. The exam will test if you know to use <code>Decimal128</code> for financial/precise values.</div>
+      <div class="tip"><strong>Memory trick — "DIID":</strong> Double · Int32 · Int64 · Decimal128</div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Insert operations -->
+  <div class="section">
+    <div class="sec-head h-teal">
+      Insert operations
+      <span class="badge tag-teal">CRUD — 17%+</span>
+    </div>
+    <div class="sec-body">
+      <div class="code-block">// insertOne — returns { acknowledged, insertedId }
+await col.insertOne({ title: "Dune", year: 2021 })
+
+// insertMany — returns { acknowledged, insertedCount, insertedIds }
+await col.insertMany([{ title: "A" }, { title: "B" }])
+
+// ordered: true  (DEFAULT) — stops on first error
+// ordered: false — skips errors, continues inserting</div>
+      <div class="trap"><strong>⚠ Exam trap — ordered inserts:</strong><br>
+        <code>ordered: true</code> (default) → stops at first error, earlier docs stay inserted<br>
+        <code>ordered: false</code> → skips bad docs, inserts all valid ones
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Find + cursor -->
+  <div class="section">
+    <div class="sec-head h-teal">
+      Find operations + cursor
+      <span class="badge tag-teal">CRUD</span>
+    </div>
+    <div class="sec-body">
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mc-title">findOne()</div>
+          <div class="mc-val">Returns a <strong>document</strong> or <code>null</code>.<br>Awaitable directly.</div>
+        </div>
+        <div class="mini-card">
+          <div class="mc-title">find()</div>
+          <div class="mc-val">Returns a <strong>Cursor</strong>.<br>Must iterate with <code>toArray()</code> or <code>for await</code>.</div>
+        </div>
+      </div>
+      <div class="code-block">// findOne → document or null
+const doc = await col.findOne({ year: 2021 })
+
+// find → cursor (NOT documents yet)
+const cursor = col.find({ year: 2021 })
+const all = await cursor.toArray()          // loads all into memory
+for await (const d of col.find({ year: 2021 })) { } // memory efficient
+
+// Chaining on cursor
+col.find({}).sort({ year: -1 }).limit(5).skip(10)</div>
+      <div class="trap"><strong>⚠ Exam trap:</strong> <code>find()</code> returns a <strong>Cursor</strong>, not an array or Promise of documents. Calling <code>await col.find()</code> gives you the cursor object, not the data.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Query operators -->
+  <div class="section">
+    <div class="sec-head h-blue">
+      Query operators — quick reference
+      <span class="badge tag-blue">MQL</span>
+    </div>
+    <div class="sec-body">
+      <table>
+        <tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+        <tr><td><code>$eq</code></td><td>equals (implicit)</td><td><code>{ year: 2010 }</code></td></tr>
+        <tr><td><code>$ne</code></td><td>not equal</td><td><code>{ rated: { $ne: "R" } }</code></td></tr>
+        <tr><td><code>$gt / $gte</code></td><td>greater than (or equal)</td><td><code>{ year: { $gt: 2000 } }</code></td></tr>
+        <tr><td><code>$lt / $lte</code></td><td>less than (or equal)</td><td><code>{ year: { $lt: 2020 } }</code></td></tr>
+        <tr><td><code>$in</code></td><td>value in array (OR logic)</td><td><code>{ year: { $in: [2010,2014] } }</code></td></tr>
+        <tr><td><code>$nin</code></td><td>value NOT in array</td><td><code>{ genre: { $nin: ["Horror"] } }</code></td></tr>
+        <tr><td><code>$and</code></td><td>all conditions true</td><td><code>{ $and: [{...},{...}] }</code></td></tr>
+        <tr><td><code>$or</code></td><td>any condition true</td><td><code>{ $or: [{...},{...}] }</code></td></tr>
+        <tr><td><code>$not</code></td><td>negates a condition</td><td><code>{ year: { $not: { $gt: 2020 } } }</code></td></tr>
+        <tr><td><code>$nor</code></td><td>all conditions false</td><td><code>{ $nor: [{...},{...}] }</code></td></tr>
+        <tr><td><code>$exists</code></td><td>field exists</td><td><code>{ plot: { $exists: true } }</code></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 6: Array queries - THE BIG TRAP -->
+  <div class="section">
+    <div class="sec-head h-coral">
+      Array queries — the #1 exam trap
+      <span class="badge tag-coral">High frequency</span>
+    </div>
+    <div class="sec-body">
+      <div class="code-block">// 4 DIFFERENT queries on { genres: ["Action","Drama","Comedy"] }
+
+{ genres: "Action" }
+// ✅ matches — "Action" is anywhere in the array
+
+{ genres: ["Action", "Drama"] }
+// ❌ does NOT match — requires EXACT array ["Action","Drama"] only
+
+{ genres: { $all: ["Action", "Drama"] } }
+// ✅ matches — contains BOTH, any order, other elements OK
+
+{ genres: { $in: ["Action", "Horror"] } }
+// ✅ matches — contains Action OR Horror (or both)
+
+{ genres: { $size: 3 } }
+// ✅ matches — array has exactly 3 elements</div>
+      <table>
+        <tr><th>Pattern</th><th>Means</th></tr>
+        <tr><td><code>{ arr: "X" }</code></td><td>Array contains "X"</td></tr>
+        <tr><td><code>{ arr: ["X","Y"] }</code></td><td>Array is EXACTLY ["X","Y"] in that order</td></tr>
+        <tr><td><code>{ arr: { $all: ["X","Y"] } }</code></td><td>Array contains X AND Y (any order)</td></tr>
+        <tr><td><code>{ arr: { $in: ["X","Y"] } }</code></td><td>Array contains X OR Y</td></tr>
+        <tr><td><code>{ arr: { $size: N } }</code></td><td>Array has exactly N elements</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 7: Projections -->
+  <div class="section">
+    <div class="sec-head h-purple">
+      Projections — include / exclude fields
+      <span class="badge tag-purple">Know the exception</span>
+    </div>
+    <div class="sec-body">
+      <div class="code-block">{ title: 1, year: 1 }          // ✅ include title, year (+ _id by default)
+{ title: 1, year: 1, _id: 0 }  // ✅ include title, year, exclude _id
+{ plot: 0, runtime: 0 }        // ✅ exclude plot, runtime (return everything else)
+{ title: 1, plot: 0 }          // ❌ ERROR — cannot mix 1 and 0 (except _id)</div>
+      <div class="trap"><strong>⚠ Rule:</strong> Cannot mix inclusion (1) and exclusion (0) in the same projection — <em>except</em> <code>_id: 0</code> which can appear with any inclusion projection. This is the <strong>one and only exception</strong>.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: Dot notation -->
+  <div class="section">
+    <div class="sec-head h-teal">
+      Dot notation — querying nested fields
+      <span class="badge tag-teal">Used everywhere</span>
+    </div>
+    <div class="sec-body">
+      <div class="code-block">// Document: { imdb: { rating: 8.8, votes: 2300000 } }
+
+// Always use quotes around dot notation keys
+col.find({ "imdb.rating": { $gte: 8.0 } })   // ✅ correct
+col.find({ imdb.rating: { $gte: 8.0 } })      // ❌ syntax error (no quotes)</div>
+    </div>
+  </div>
+
+  <!-- SECTION 9: Must-remember list -->
+  <div class="section">
+    <div class="sec-head h-amber">
+      Must-remember rules for exam day
+      <span class="badge tag-amber">Quick-fire</span>
+    </div>
+    <div class="sec-body">
+      <div class="verdict"><span class="icon">⭐</span> <span><code>_id</code> is <strong>immutable</strong> — cannot be updated ever</span></div>
+      <div class="verdict"><span class="icon">⭐</span> <span><code>find()</code> returns a <strong>Cursor</strong>, not documents</span></div>
+      <div class="verdict"><span class="icon">⭐</span> <span>Use <code>Decimal128</code> for money / precise decimals — never Double</span></div>
+      <div class="verdict"><span class="icon">⭐</span> <span>Array exact match: <code>{ arr: ["A","B"] }</code> — order matters, nothing else allowed</span></div>
+      <div class="verdict"><span class="icon">⭐</span> <span>Cannot mix inclusion + exclusion in projection (except <code>_id: 0</code>)</span></div>
+      <div class="verdict"><span class="icon">⭐</span> <span><code>insertMany</code> default is <code>ordered: true</code> — stops on first error</span></div>
+      <div class="verdict"><span class="icon">⭐</span> <span>Documents in same collection can have different shapes — schema-flexible</span></div>
+      <div class="verdict"><span class="icon">⭐</span> <span>Max document size = <strong>16 MB</strong></span></div>
+      <div class="verdict"><span class="icon">⭐</span> <span>Dot notation keys must always be in <strong>quotes</strong> in queries</span></div>
+    </div>
+  </div>
+
+  <button class="next-btn" onclick="sendPrompt('Start Day 2 teaching now')">Ready for Day 2 →</button>
+</div>
